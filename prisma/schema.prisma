@@ -1,15 +1,163 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Enum pour les rôles utilisateurs
+enum Role {
+  TUTEUR
+  TUTELLE
+}
+
+// Enum pour les statuts de relation
+enum RelationStatus {
+  PENDING   // En attente d'acceptation
+  ACTIVE    // Relation active
+  SUSPENDED // Suspendue temporairement
+  TERMINATED // Terminée
+}
+
+// Table Utilisateurs
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  firstName     String
+  lastName      String
+  phone         String?
+  role          Role
+  avatarUrl     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations si l'utilisateur est un TUTEUR
+  tutellesManaged Relation[] @relation("TuteurRelation")
+  
+  // Relations si l'utilisateur est un TUTELLE
+  tuteurs         Relation[] @relation("TutelleRelation")
+  
+  // Documents uploadés par cet utilisateur
+  documentsUploaded Document[] @relation("Uploader")
+  
+  // Messages envoyés
+  messagesSent Message[] @relation("Sender")
+  
+  // Événements créés
+  eventsCreated Event[] @relation("Creator")
+  
+  // Notifications
+  notifications Notification[]
+  
+  @@map("users")
+}
+
+// Table Relations Tuteur-Tutellé
+model Relation {
+  id        String         @id @default(cuid())
+  status    RelationStatus @default(PENDING)
+  
+  tuteurId  String
+  tutelleId String
+  
+  tuteur    User @relation("TuteurRelation", fields: [tuteurId], references: [id], onDelete: Cascade)
+  tutelle   User @relation("TutelleRelation", fields: [tutelleId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Documents partagés dans cette relation
+  documents Document[]
+  
+  // Événements liés à cette relation
+  events Event[]
+  
+  // Messages échangés
+  messages Message[]
+  
+  @@unique([tuteurId, tutelleId])
+  @@map("relations")
+}
+
+// Table Documents
+model Document {
+  id          String   @id @default(cuid())
+  title       String
+  fileName    String
+  fileUrl     String
+  fileSize    Int      // en bytes
+  mimeType    String
+  category    String   // "medical", "administratif", "personnel", etc.
+  
+  uploaderId  String
+  relationId  String
+  
+  uploader    User     @relation("Uploader", fields: [uploaderId], references: [id], onDelete: Cascade)
+  relation    Relation @relation(fields: [relationId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("documents")
+}
+
+// Table Messages (Chat)
+model Message {
+  id         String   @id @default(cuid())
+  content    String
+  isRead     Boolean  @default(false)
+  
+  senderId   String
+  relationId String
+  
+  sender     User     @relation("Sender", fields: [senderId], references: [id], onDelete: Cascade)
+  relation   Relation @relation(fields: [relationId], references: [id], onDelete: Cascade)
+  
+  createdAt  DateTime @default(now())
+  
+  @@map("messages")
+}
+
+// Table Événements (Calendrier)
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  type        String   // "medical", "administratif", "personnel"
+  
+  creatorId   String
+  relationId  String
+  
+  creator     User     @relation("Creator", fields: [creatorId], references: [id], onDelete: Cascade)
+  relation    Relation @relation(fields: [relationId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("events")
+}
+
+// Table Notifications
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  type      String   // "event", "message", "document", "system"
+  isRead    Boolean  @default(false)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@map("notifications")
 }
