@@ -10,6 +10,18 @@ export async function POST(request: Request) {
 
     console.log("Tentative de création utilisateur:", { id, email, firstName, lastName, role })
 
+    // Vérifier si l'utilisateur existe déjà
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    })
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: "Un compte avec cet email existe déjà" },
+        { status: 409 }
+      )
+    }
+
     // Créer l'utilisateur dans la base de données
     const user = await prisma.user.create({
       data: {
