@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client"
 import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowRight } from "@/components/pictos/arrow-right"
+import { ArrowRight } from "lucide-react"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -30,20 +30,24 @@ export default function LoginPage() {
       if (error) throw error
 
       // Récupérer le profil utilisateur pour vérifier son rôle
-      const { data: userData } = await supabase
+      const { data: userData, error: userError } = await supabase
         .from("users")
         .select("role")
         .eq("email", email)
         .single()
 
+      if (userError) throw userError
+
       // Rediriger selon le rôle
       if (userData?.role === "TUTEUR") {
-        router.push("/dashboard/tuteur")
+        router.push("/tuteur/dashboard")
       } else {
-        router.push("/dashboard/tutelle")
+        router.push("/tutelle/dashboard")
       }
+      
+      router.refresh()
     } catch (err: any) {
-      setError(err.message || "Une erreur est survenue")
+      setError(err.message || "Email ou mot de passe incorrect")
     } finally {
       setLoading(false)
     }
@@ -96,8 +100,6 @@ export default function LoginPage() {
               </button>
             </div>
 
-
-
             {/* Message d'erreur */}
             {error && (
               <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">
@@ -114,6 +116,17 @@ export default function LoginPage() {
               {loading ? "Connexion..." : "Se connecter"}
               <ArrowRight className="w-5 h-5" />
             </Button>
+
+            {/* Lien vers signup */}
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => router.push("/signup")}
+                className="text-sm font-raleway text-brand-blue hover:underline"
+              >
+                Pas encore de compte ? S'inscrire
+              </button>
+            </div>
           </form>
         </div>
       </div>

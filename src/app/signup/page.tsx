@@ -34,7 +34,13 @@ export default function SignupPage() {
         password: formData.password,
       })
 
-      if (authError) throw authError
+      if (authError) {
+        // Gérer les erreurs Supabase spécifiques
+        if (authError.message.includes("already registered")) {
+          throw new Error("Un compte avec cet email existe déjà")
+        }
+        throw authError
+      }
 
       // 2. Créer le profil utilisateur dans la base
       const response = await fetch("/api/auth/signup", {
@@ -49,7 +55,11 @@ export default function SignupPage() {
         }),
       })
 
-      if (!response.ok) throw new Error("Erreur lors de la création du profil")
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erreur lors de la création du profil")
+      }
 
       // Rediriger vers la page de connexion
       router.push("/login?message=Compte créé avec succès")
