@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { prisma } from "@/lib/prisma"
 import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -80,7 +79,7 @@ export default function SignupPage() {
               value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
               required
-              className="h-[42px] border-border rounded-[9px]"
+              className="h-[42px] border-brand-blue-light border-2 bg-brand-blue-bg rounded-[9px] text-sm font-raleway"
             />
 
             <Input
@@ -89,7 +88,7 @@ export default function SignupPage() {
               value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
               required
-              className="h-[42px] border-border rounded-[9px]"
+              className="h-[42px] border-brand-blue-light border-2 bg-brand-blue-bg rounded-[9px] text-sm font-raleway"
             />
 
             <Input
@@ -98,7 +97,7 @@ export default function SignupPage() {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
-              className="h-[42px] border-border rounded-[9px]"
+              className="h-[42px] border-brand-blue-light border-2 bg-brand-blue-bg rounded-[9px] text-sm font-raleway"
             />
 
             <Input
@@ -107,7 +106,7 @@ export default function SignupPage() {
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required
-              className="h-[42px] border-border rounded-[9px]"
+              className="h-[42px] border-brand-blue-light border-2 bg-brand-blue-bg rounded-[9px] text-sm font-raleway"
             />
 
             <div className="space-y-2">
@@ -143,7 +142,7 @@ export default function SignupPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-brand-orange-light hover:bg-brand-orange text-foreground font-montserrat font-semibold rounded-xl flex items-center justify-center gap-2"
+              className="w-full h-12 bg-brand-blue hover:bg-brand-purple text-white font-montserrat font-semibold rounded-xl flex items-center justify-center gap-2"
             >
               {loading ? "Création..." : "Créer mon compte"}
               <ArrowRight className="w-5 h-5" />
