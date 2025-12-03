@@ -66,30 +66,28 @@ export default function LoginPage() {
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Email */}
             <div className="space-y-2">
+              <p className="text-sm">Identifiant de connexion</p>
               <Input
                 type="email"
-                placeholder="Email"
+                placeholder="Identifiant"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-[42px] border-border rounded-[9px] text-sm font-raleway"
+                className="h-[42px] border-brand-blue-light border-2 bg-brand-blue-bg rounded-[9px] text-sm font-raleway"
               />
             </div>
 
             {/* Mot de passe */}
             <div className="space-y-2">
+              <p className="text-sm">Mot de passe</p>
               <Input
                 type="password"
                 placeholder="Mot de passe"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="h-[42px] border-border rounded-[9px] text-sm font-raleway"
+                className="h-[42px] border-brand-blue-light border-2 bg-brand-blue-bg rounded-[9px] text-sm font-raleway"
               />
-            </div>
-
-            {/* Mot de passe oublié */}
-            <div className="text-right">
               <button
                 type="button"
                 className="text-sm font-raleway text-brand-blue hover:underline"
@@ -97,6 +95,8 @@ export default function LoginPage() {
                 Mot de passe oublié ?
               </button>
             </div>
+
+
 
             {/* Message d'erreur */}
             {error && (
@@ -109,7 +109,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-brand-orange-light hover:bg-brand-orange text-foreground font-montserrat font-semibold rounded-xl flex items-center justify-center gap-2"
+              className="w-full h-12 bg-brand-blue-light hover:bg-brand-blue text-white font-montserrat font-semibold rounded-xl flex items-center justify-center gap-2"
             >
               {loading ? "Connexion..." : "Se connecter"}
               <ArrowRight className="w-5 h-5" />
