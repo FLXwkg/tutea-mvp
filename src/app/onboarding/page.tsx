@@ -18,13 +18,7 @@ const onboardingSteps = [
   {
     id: 2,
     title: "Retrouvez l'essentiel",
-    description: "Sur Tutéa, plusieurs fonctionnalités sont proposées pour faciliter la gestion du quotidien :",
-    features: [
-      "un calendrier partagé,",
-      "des tutos pour accompagner les actions du quotidien,",
-      "des outils pour gérer le budget,",
-      "un gestionnaire de documents administratifs.",
-    ],
+    description: "Sur Tutéa, plusieurs fonctionnalités sont proposées pour faciliter la gestion du quotidien, dont un calendrier partagé, des tutos pour accompagner les actions du quotidien, des outils pour gérer le budget et un gestionnaire de documents administratifs.",
     icon: OnboardingImage2,
   },
   {
@@ -61,54 +55,49 @@ export default function OnboardingPage() {
   const Icon = step.icon
 
   return (
-    <div className="min-h-screen bg-[#E8D5C4] flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-[#E8D5C4] rounded-3xl p-8 relative">
+    <div className="min-h-screen bg-brand-bg flex items-center justify-center p-6">
+      <div className="w-full max-w-md bg-brand-bg rounded-3xl p-8 relative h-[700px]">
         {/* Illustration/Icon */}
-        <div className="flex justify-center mb-8">
+        <div className="fixed top-16 left-1/2 transform -translate-x-1/2 flex justify-center z-10">
           <Icon />
         </div>
 
         {/* Progress indicators */}
-        <div className="flex justify-center gap-20 mb-8">
+        <div className="fixed top-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-10">
           {onboardingSteps.map((s, index) => (
-            <div
-              key={s.id}
-              className={`flex items-center justify-center w-12 h-12 rounded-full border-2 text-sm font-montserrat font-semibold transition-colors ${
-                index === currentStep
-                  ? "bg-white text-brand-blue border-brand-blue"
-                  : index < currentStep
-                  ? "bg-brand-blue text-white border-brand-blue"
-                  : "bg-white text-brand-blue border-border"
-              }`}
-            >
-              {index < currentStep ? "✓" : `0${s.id}`}
+            <div key={s.id} className="flex items-center">
+              <div
+                className={`flex items-center justify-center w-12 h-12 rounded-full border-2 text-sm font-montserrat font-semibold transition-colors ${
+                  index === currentStep
+                    ? "bg-white text-brand-blue border-brand-blue"
+                    : index < currentStep
+                    ? "bg-brand-blue text-white border-brand-blue"
+                    : "bg-white text-brand-blue border-border"
+                }`}
+              >
+                {index < currentStep ? "✓" : `0${s.id}`}
+              </div>
+              {index < onboardingSteps.length - 1 && (
+                <div className={`w-20 h-0.5 mx-4 transition-colors ${
+                  index < currentStep ? "bg-brand-blue" : "bg-border"
+                }`} />
+              )}
             </div>
           ))}
         </div>
 
         {/* Content */}
-        <div className="text-center mb-8">
+        <div className="fixed top-[55%] left-1/2 transform -translate-x-1/2 w-full max-w-md px-8 text-center z-10">
           <h2 className="text-2xl font-montserrat font-bold text-foreground mb-4">
             {step.title}
           </h2>
           <p className="text-sm font-raleway text-foreground leading-relaxed">
             {step.description}
           </p>
-          
-          {step.features && (
-            <ul className="mt-4 space-y-2 text-left">
-              {step.features.map((feature, index) => (
-                <li key={index} className="text-sm font-raleway text-foreground flex items-start">
-                  <span className="text-brand-blue mr-2">•</span>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
 
         {/* Buttons */}
-        <div className="space-y-3">
+        <div className="fixed bottom-6 left-6 right-6 max-w-md mx-auto space-y-3">
           <Button
             onClick={handleNext}
             className="w-full h-14 bg-brand-blue hover:bg-brand-purple text-white font-montserrat font-semibold rounded-2xl flex items-center justify-center gap-2 text-base"
@@ -119,8 +108,7 @@ export default function OnboardingPage() {
 
           <Button
             onClick={handleSkip}
-            variant="outline"
-            className="w-full h-14 bg-transparent border-2 border-brand-blue text-brand-blue hover:bg-brand-blue/10 font-montserrat font-semibold rounded-2xl text-base"
+            className="w-full h-14 bg-brand-bg border-2 border-brand-blue text-brand-blue hover:bg-brand-blue/10 font-montserrat font-semibold rounded-2xl text-base"
           >
             Passez
           </Button>
