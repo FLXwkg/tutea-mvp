@@ -16,6 +16,7 @@ export default function SignupPage() {
     firstName: "",
     lastName: "",
     role: "TUTELLE" as "TUTEUR" | "TUTELLE",
+    tuteurCode: "", // AJOUT
   })
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -28,6 +29,10 @@ export default function SignupPage() {
     setLoading(true)
 
     try {
+      if (formData.role === "TUTELLE" && !formData.tuteurCode.trim()) {
+        throw new Error("Veuillez entrer le code de votre tuteur")
+      }
+
       // 1. Créer l'utilisateur dans Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
@@ -52,6 +57,7 @@ export default function SignupPage() {
           firstName: formData.firstName,
           lastName: formData.lastName,
           role: formData.role,
+          tuteurCode: formData.role === "TUTELLE" ? formData.tuteurCode : undefined, // AJOUT
         }),
       })
 
@@ -142,6 +148,27 @@ export default function SignupPage() {
                 </label>
               </div>
             </div>
+
+            {/* AJOUT: Champ code tuteur - affiché seulement pour TUTELLE */}
+            {formData.role === "TUTELLE" && (
+              <div className="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+                <Label htmlFor="tuteurCode" className="text-blue-900 font-semibold mb-2 block">
+                  Code du tuteur *
+                </Label>
+                <Input
+                  id="tuteurCode"
+                  type="text"
+                  placeholder="Ex: TUT-AB12CD"
+                  value={formData.tuteurCode}
+                  onChange={(e) => setFormData({ ...formData, tuteurCode: e.target.value.toUpperCase() })}
+                  required
+                  className="h-[42px] border-blue-300 border-2 bg-white rounded-[9px] text-sm font-mono"
+                />
+                <p className="text-xs text-blue-700 mt-2">
+                  Demandez ce code à votre tuteur pour lier vos comptes
+                </p>
+              </div>
+            )}
 
             {error && (
               <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">
