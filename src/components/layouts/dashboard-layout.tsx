@@ -2,17 +2,18 @@
 
 import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
-import { SearchBar } from "@/components/searchbar"
 import { Navbar } from "@/components/navbar"
 import { User } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 interface DashboardLayoutProps {
-  firstName: string
+  user: { firstName: any; lastName: any; role: any; } | null
   children: React.ReactNode
   onSearch?: (value: string) => void
 }
 
-export function DashboardLayout({ firstName, children, onSearch }: DashboardLayoutProps) {
+export function DashboardLayout({ user, children, onSearch }: DashboardLayoutProps) {
+  const router = useRouter()
   const [currentTime, setCurrentTime] = useState(new Date())
 
   useEffect(() => {
@@ -33,16 +34,17 @@ export function DashboardLayout({ firstName, children, onSearch }: DashboardLayo
     hour: '2-digit', 
     minute: '2-digit' 
   })
+  const basePath = user?.role === "TUTEUR" ? "/tuteur" : "/tutelle"
 
   return (
     <div className="min-h-screen bg-white pb-24">  
       {/* Welcome Section */}
       <div className="bg-brand-bg px-6 pb-6">
-        <Header rightButton={{label: 'Compte', icon: User}}  />
+        <Header rightButton={{label: 'Compte', icon: User, onClick: () => router.push(`${basePath}/account`)}}  />
         <div className="flex justify-between items-start mt-6 mb-3">
           <div>
             <h1 className="text-2xl font-montserrat font-bold text-foreground">
-              Bonjour, {firstName} !
+              Bonjour, {user?.firstName || "Utilisateur"} !
             </h1>
             <p className="text-xl font-montserrat font-semibold text-foreground">
               Bienvenue sur TUTÉA

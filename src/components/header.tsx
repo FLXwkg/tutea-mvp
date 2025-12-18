@@ -8,7 +8,7 @@ interface HeaderProps {
   showSearch?: boolean
   searchPlaceholder?: string
   rightButton?: {
-    label: string
+    label?: string
     icon?: LucideIcon
     onClick?: () => void
   }

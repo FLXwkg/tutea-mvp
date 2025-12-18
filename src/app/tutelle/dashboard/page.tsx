@@ -41,7 +41,7 @@ export default async function DashboardPage() {
     ]
 
   return (
-    <DashboardLayout firstName={userData?.firstName || "Utilisateur"}>
+    <DashboardLayout user={userData}>
       {/* Question section */}
       <div className="px-6 mb-6">
         <h2 className="text-lg font-montserrat font-semibold text-foreground mb-4">
