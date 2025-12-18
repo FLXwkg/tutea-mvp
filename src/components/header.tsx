@@ -24,7 +24,7 @@ export function Header({
   const RightIcon = rightButton?.icon
 
   return (
-    <header className="bg-[#E8D5C4] px-6 py-4">
+    <header className="bg-brand-bg py-4">
       <div className="flex items-center gap-4">
         {/* Search Bar */}
         {showSearch && <SearchBar placeholder={searchPlaceholder} onSearch={onSearch} />}

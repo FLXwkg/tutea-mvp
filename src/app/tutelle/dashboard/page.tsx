@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { DashboardLayout } from "@/components/layouts/dashboard-layout"
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
+import FireCampIcon from "@/components/pictos/actions/fire-camp-icon"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -20,23 +22,23 @@ export default async function DashboardPage() {
     .single()
 
     const actionCards = [
-    {
-      id: 1,
-      title: "Comment me préparer pour la journée ?",
-      image: "/illustrations/morning-routine.svg", // Remplace par ton vrai chemin
-      bgColor: "bg-[#F09332]",
-      textColor: "text-foreground",
-      onClick: () => console.log("Card 1 clicked"),
-    },
-    {
-      id: 2,
-      title: "Envoyer un message",
-      image: "/illustrations/send-message.svg", // Remplace par ton vrai chemin
-      bgColor: "bg-[#6B9BD1]",
-      textColor: "text-white",
-      onClick: () => console.log("Card 2 clicked"),
-    },
-  ]
+      {
+        id: 1,
+        title: "Comment me préparer pour la journée ?",
+        Icon: FireCampIcon,
+        bgColor: "bg-[#F09332]",
+        textColor: "text-foreground",
+        href: "/tutelle/routines",
+      },
+      {
+        id: 2,
+        title: "Envoyer un message",
+        Icon: FireCampIcon,
+        bgColor: "bg-[#6B9BD1]",
+        textColor: "text-white",
+        href: "/tutelle/messages",
+      },
+    ]
 
   return (
     <DashboardLayout firstName={userData?.firstName || "Utilisateur"}>
@@ -48,42 +50,36 @@ export default async function DashboardPage() {
 
         {/* Action cards */}
         <div className="space-y-4">
-          {/* Card 1 */}
-          <div className="bg-[#F09332] rounded-3xl p-6 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center">
-                <span className="text-2xl">📋</span>
-              </div>
-              <div>
-                <p className="text-base font-raleway font-semibold text-foreground">
-                  Comment me préparer pour la
-                </p>
-                <p className="text-base font-raleway font-semibold text-foreground">
-                  journée ?
-                </p>
-              </div>
-            </div>
-            <button className="bg-white rounded-full p-3 hover:bg-gray-100 transition-colors">
-              <ArrowRight className="w-5 h-5 text-foreground" />
-            </button>
-          </div>
+          {actionCards.map((card) => { 
+            const IconComponent = card.Icon
+            return (
+              <Link
+                key={card.id}
+                href={card.href}
+                className={`block w-full ${card.bgColor} rounded-3xl p-4 hover:opacity-90 transition-opacity`}
+              >
+                <div className="flex flex-col gap-3">
+                  {/* Texte en haut */}
+                  <p className={`text-left text-sm font-raleway font-semibold ${card.textColor} leading-relaxed`}>
+                    {card.title}
+                  </p>
+                  
+                  {/* Icon et Arrow en bas, espacés */}
+                  <div className="flex items-center justify-between">
+                    {/* Illustration */}
+                    <div className="w-16 h-16 shrink-0">
+                      <IconComponent className="w-full h-full"/>
+                    </div>
 
-          {/* Card 2 */}
-          <div className="bg-[#6B9BD1] rounded-3xl p-6 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center">
-                <span className="text-2xl">✉️</span>
-              </div>
-              <div>
-                <p className="text-base font-raleway font-semibold text-white">
-                  Envoyer un message
-                </p>
-              </div>
-            </div>
-            <button className="bg-white rounded-full p-3 hover:bg-gray-100 transition-colors">
-              <ArrowRight className="w-5 h-5 text-foreground" />
-            </button>
-          </div>
+                    {/* Bouton flèche */}
+                    <div className="bg-white rounded-full p-2 shrink-0">
+                      <ArrowRight className="w-5 h-5 text-foreground" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </DashboardLayout>

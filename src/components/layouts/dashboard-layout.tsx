@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { SearchBar } from "@/components/searchbar"
 import { Navbar } from "@/components/navbar"
+import { User } from "lucide-react"
 
 interface DashboardLayoutProps {
   firstName: string
@@ -36,9 +37,9 @@ export function DashboardLayout({ firstName, children, onSearch }: DashboardLayo
   return (
     <div className="min-h-screen bg-white pb-24">  
       {/* Welcome Section */}
-      <div className="bg-[#E8D5C4] px-6 pb-6">
-        <Header showSearch={false} />
-        <div className="flex justify-between items-start mb-6">
+      <div className="bg-brand-bg px-6 pb-6">
+        <Header rightButton={{label: 'Compte', icon: User}}  />
+        <div className="flex justify-between items-start mt-6 mb-3">
           <div>
             <h1 className="text-2xl font-montserrat font-bold text-foreground">
               Bonjour, {firstName} !
@@ -48,9 +49,6 @@ export function DashboardLayout({ firstName, children, onSearch }: DashboardLayo
             </p>
           </div>
         </div>
-
-        {/* Search bar */}
-        <SearchBar onSearch={onSearch} />
       </div>
 
       {/* Time Card */}
