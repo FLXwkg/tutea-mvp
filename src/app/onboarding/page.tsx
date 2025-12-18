@@ -63,11 +63,11 @@ export default function OnboardingPage() {
         </div>
 
         {/* Progress indicators */}
-        <div className="fixed top-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-10">
+        <div className="fixed top-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-10 gap-4">
           {onboardingSteps.map((s, index) => (
-            <div key={s.id} className="flex items-center">
+            <div key={s.id} className="flex items-center gap-4">
               <div
-                className={`flex items-center justify-center w-12 h-12 rounded-full border-2 text-sm font-montserrat font-semibold transition-colors ${
+                className={`flex items-center justify-center w-8 h-8 rounded-full border-2 text-sm font-montserrat font-semibold transition-colors ${
                   index === currentStep
                     ? "bg-white text-brand-blue border-brand-blue"
                     : index < currentStep
