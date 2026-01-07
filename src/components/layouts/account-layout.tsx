@@ -1,15 +1,18 @@
 "use client"
 
+import { useState } from "react"
 import { Header } from "@/components/header"
 import { Navbar } from "@/components/navbar"
 import Image from "next/image"
 import Link from "next/link"
-import { ChevronRight, LogOut, User, HelpCircle, History, Settings, Palette } from "lucide-react"
+import { ChevronRight, LogOut, User, HelpCircle, History, Settings, Palette, Copy, Check } from "lucide-react"
 
 interface AccountLayoutProps {
   firstName: string
   lastName: string
   email: string
+  role: "TUTEUR" | "TUTELLE"
+  tuteurCode?: string
   avatarUrl?: string
   children?: React.ReactNode
 }
@@ -50,55 +53,95 @@ const menuItems = [
 export function AccountLayout({ 
   firstName, 
   lastName, 
-  email, 
+  email,
+  role,
+  tuteurCode,
   avatarUrl,
   children 
 }: AccountLayoutProps) {
+  const [copied, setCopied] = useState(false)
+
+  const copyToClipboard = () => {
+    if (tuteurCode) {
+      navigator.clipboard.writeText(tuteurCode)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white pb-24">
       <div className='bg-brand-bg'>
         {/* Header */}
-      <div className=" px-6 pb-6">
-        <Header 
-          rightButton={{
-            label: 'Retour', 
-            icon: ChevronRight,
-            onClick: () => window.history.back()
-          }} 
-        />
-      </div>
+        <div className="px-6 pb-6">
+          <Header 
+            rightButton={{
+              label: 'Retour', 
+              icon: ChevronRight,
+              onClick: () => window.history.back()
+            }} 
+          />
+        </div>
 
-      {/* Profile Section */}
-      <div className="bg-brand-bg px-6 pb-4">
-        <div className="flex flex-col items-center text-center mb-8">
-          {/* Avatar */}
-          <div className="w-24 h-24 rounded-full bg-gray-200 mb-4 overflow-hidden">
-            {avatarUrl ? (
-              <Image 
-                src={avatarUrl} 
-                alt={`${firstName} ${lastName}`}
-                width={96}
-                height={96}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-brand-orange text-white text-3xl font-bold">
-                {firstName.charAt(0)}{lastName.charAt(0)}
+        {/* Profile Section */}
+        <div className="bg-brand-bg px-6 pb-4">
+          <div className="flex flex-col items-center text-center mb-8">
+            {/* Avatar */}
+            <div className="w-24 h-24 rounded-full bg-gray-200 mb-4 overflow-hidden">
+              {avatarUrl ? (
+                <Image 
+                  src={avatarUrl} 
+                  alt={`${firstName} ${lastName}`}
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-brand-orange text-white text-3xl font-bold">
+                  {firstName.charAt(0)}{lastName.charAt(0)}
+                </div>
+              )}
+            </div>
+            
+            {/* Name */}
+            <h2 className="text-xl font-montserrat font-bold text-foreground mb-1">
+              {firstName} {lastName}
+            </h2>
+            
+            {/* Email */}
+            <p className="text-sm font-raleway text-gray-600 mb-3">
+              {email}
+            </p>
+
+            {/* Tuteur Code - Seulement pour les tuteurs */}
+            {role === "TUTEUR" && tuteurCode && (
+              <div className="bg-white rounded-2xl p-4 w-full max-w-xs shadow-sm">
+                <p className="text-xs font-raleway text-gray-600 mb-2">
+                  Votre code tuteur
+                </p>
+                <div className="flex items-center justify-between gap-3">
+                  <code className="text-lg font-mono font-bold text-brand-blue">
+                    {tuteurCode}
+                  </code>
+                  <button
+                    onClick={copyToClipboard}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Copier le code"
+                  >
+                    {copied ? (
+                      <Check className="w-5 h-5 text-green-600" />
+                    ) : (
+                      <Copy className="w-5 h-5 text-gray-600" />
+                    )}
+                  </button>
+                </div>
+                <p className="text-xs font-raleway text-gray-500 mt-2">
+                  Partagez ce code avec vos tutellés pour les lier à votre compte
+                </p>
               </div>
             )}
           </div>
-          
-          {/* Name */}
-          <h2 className="text-xl font-montserrat font-bold text-foreground mb-1">
-            {firstName} {lastName}
-          </h2>
-          
-          {/* Email */}
-          <p className="text-sm font-raleway text-gray-600">
-            {email}
-          </p>
         </div>
-      </div>
       </div>
       
       <div className="px-6 pt-8 pb-4">
