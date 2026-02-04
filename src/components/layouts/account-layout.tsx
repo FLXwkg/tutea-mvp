@@ -60,6 +60,7 @@ export function AccountLayout({
   avatarUrl,
   children 
 }: Readonly<AccountLayoutProps>) {
+  const basePath = role === "TUTEUR" ? "/tuteur" : "/tutelle"
   const [copied, setCopied] = useState(false)
   const router = useRouter()
 
@@ -170,7 +171,7 @@ export function AccountLayout({
             return (
               <Link
                 key={item.id}
-                href={item.href}
+                href={`${basePath}/${item.href}`}
                 className="flex items-center justify-between bg-gray-50 rounded-2xl p-4 hover:bg-gray-100 transition-colors"
               >
                 <div className="flex items-center gap-3">

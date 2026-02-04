@@ -1,15 +1,26 @@
-import { Navbar } from "@/components/navbar"
+import { createClient } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
+import { DocumentsLayout } from "@/components/layouts/documents-layout"
 
-export default function DocumentsPage() {
+export default async function DocumentsPage() {
+  const supabase = await createClient()
+  
+  const { data: { user } } = await supabase.auth.getUser()
+  
+  if (!user) {
+    redirect("/login")
+  }
+
+  // Récupérer les infos utilisateur
+  const { data: userData } = await supabase
+    .from("users")
+    .select("firstName, lastName, role, tuteurCode, avatarUrl")
+    .eq("id", user.id)
+    .single()
+
   return (
-    <div className="min-h-screen bg-[#E8D5C4] pb-24">
-      <div className="px-6 pt-12">
-        <h1 className="text-2xl font-montserrat font-bold text-foreground mb-4">
-          Documents
-        </h1>
-        <p className="text-foreground">Page en construction...</p>
-      </div>
-      <Navbar />
-    </div>
+    <DocumentsLayout  user={userData}>
+      {/* Vous pouvez ajouter du contenu supplémentaire ici si nécessaire */}
+    </DocumentsLayout>
   )
 }
