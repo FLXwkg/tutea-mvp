@@ -32,7 +32,9 @@ export function Navbar() {
   const basePath = role === "TUTEUR" ? "/tuteur" : "/tutelle"
 
   const navItems = [
-    { href: `${basePath}/dashboard`, icon: Home, label: "Accueil", aliases: [`${basePath}/account`] },
+    { href: `${basePath}/dashboard`, icon: Home, label: "Accueil", aliases: [
+      `${basePath}/account`, `${basePath}/account/profile`, `${basePath}/account/settings`
+    ] },
     { href: `${basePath}/calendar`, icon: Calendar, label: "Calendrier", aliases: [] },
     { href: `${basePath}/documents`, icon: FileText, label: "Documents", aliases: []  },
     { href: `${basePath}/budget`, icon: PiggyBankIcon, label: "Budget", aliases: []  },
@@ -45,6 +47,7 @@ export function Navbar() {
         <div className="flex justify-around items-center h-18 gap-0 border rounded-xl">
           {navItems.map((item, index) => {
             const isActive = pathname === item.href || item.aliases?.some(alias => pathname === alias)
+            console.log("Comparing", pathname, "with", item.href, "and aliases", item.aliases, "isActive:", isActive)
             const Icon = item.icon
             const isFirst = index === 0
             const isLast = index === navItems.length - 1
