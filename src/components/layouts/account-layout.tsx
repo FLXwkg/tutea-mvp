@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Header } from "@/components/header"
 import { Navbar } from "@/components/navbar"
 import Image from "next/image"
@@ -58,14 +59,31 @@ export function AccountLayout({
   tuteurCode,
   avatarUrl,
   children 
-}: AccountLayoutProps) {
+}: Readonly<AccountLayoutProps>) {
   const [copied, setCopied] = useState(false)
+  const router = useRouter()
 
   const copyToClipboard = () => {
     if (tuteurCode) {
       navigator.clipboard.writeText(tuteurCode)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      // Call your logout API endpoint
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+      })
+      
+      if (response.ok) {
+        // Redirect to login page
+        router.push("/login")
+      }
+    } catch (error) {
+      console.error("Logout failed:", error)
     }
   }
 
@@ -168,7 +186,7 @@ export function AccountLayout({
         </div>
 
         {/* Logout Button */}
-        <button className="w-full flex items-center justify-between bg-red-50 rounded-2xl p-4 hover:bg-red-100 transition-colors mt-6">
+        <button onClick={handleLogout} className="w-full flex items-center justify-between bg-red-50 rounded-2xl p-4 hover:bg-red-100 transition-colors mt-6">
           <div className="flex items-center gap-3">
             <LogOut className="w-5 h-5 text-red-600" />
             <span className="text-sm font-raleway font-medium text-red-600">
