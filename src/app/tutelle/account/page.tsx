@@ -13,8 +13,8 @@ export default async function AccountPage() {
 
   // Récupérer les infos utilisateur
   const { data: userData } = await supabase
-    .from("users")
-    .select("firstName, lastName, avatarUrl")
+    .from("users") 
+    .select("firstName, lastName, email, avatarUrl, role")
     .eq("id", user.id)
     .single()
 
@@ -23,8 +23,8 @@ export default async function AccountPage() {
       firstName={userData?.firstName || "Utilisateur"}
       lastName={userData?.lastName || ""}
       email={user.email || ""}
-      avatarUrl={userData?.avatarUrl}
-    >
+      avatarUrl={userData?.avatarUrl} 
+      role={userData?.role} >
       {/* Vous pouvez ajouter du contenu supplémentaire ici si nécessaire */}
     </AccountLayout>
   )
