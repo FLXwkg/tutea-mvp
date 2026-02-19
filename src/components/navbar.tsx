@@ -43,7 +43,7 @@ export function Navbar() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-transparent">
-      <div className="mx-4 bg-white shadow-lg z-50 rounded-xl">
+      <div className=" xs:mx-2 md:mx-4 bg-white shadow-lg z-50 rounded-xl">
         <div className="flex justify-around items-center h-18 gap-0 border rounded-xl">
           {navItems.map((item, index) => {
             const isActive = pathname === item.href || item.aliases?.some(alias => pathname === alias)
@@ -57,14 +57,14 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center justify-center px-4 py-4 flex-1 transition-all relative
+                className={`flex flex-col items-center justify-center px-2 py-2 sm:px-4 sm:py-4 flex-1 transition-all relative
                   ${isActive ? "bg-[#2A2A2A] text-white rounded-xl" : "text-gray-600 hover:bg-gray-100"}
                   ${isFirst ? "rounded-l-xl" : ""}
                   ${isLast ? "rounded-r-xl" : ""}
                   `}
               >
-                <Icon className="w-6 h-6" />
-                <span className="text-xs font-raleway font-medium">{item.label}</span>
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="text-[10px] font-raleway font-medium">{item.label}</span>
                 
                 {/* Bordure à droite, cachée si l'élément actuel ou le suivant est actif */}
                 {!isLast && !isActive && !nextIsActive && (
