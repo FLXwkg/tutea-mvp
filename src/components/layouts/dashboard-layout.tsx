@@ -12,7 +12,7 @@ interface DashboardLayoutProps {
   onSearch?: (value: string) => void
 }
 
-export function DashboardLayout({ user, children, onSearch }: DashboardLayoutProps) {
+export function DashboardLayout({ user, children, onSearch }: Readonly<DashboardLayoutProps>) {
   const router = useRouter()
   const [currentTime, setCurrentTime] = useState(new Date())
 
@@ -55,11 +55,11 @@ export function DashboardLayout({ user, children, onSearch }: DashboardLayoutPro
 
       {/* Time Card */}
       <div className="px-6 mb-6">
-        <div className="bg-white rounded-3xl p-8 text-center">
-          <p className="text-base font-raleway text-foreground mb-4 capitalize">
+        <div className="bg-white rounded-3xl p-4 sm:p-8 text-center">
+          <p className="text-sm sm:text-base font-raleway text-foreground mb-4 capitalize">
             {formattedDate}
           </p>
-          <p className="text-8xl font-bold text-foreground tracking-tight">
+          <p className="text-6xl sm:text-7xl lg:text-8xl font-bold text-foreground tracking-tight">
             {time}
           </p>
         </div>
