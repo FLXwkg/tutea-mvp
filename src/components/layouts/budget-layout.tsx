@@ -1,8 +1,10 @@
 "use client"
 
+import { useState } from "react"
 import { Header } from "@/components/header"
 import { Navbar } from "@/components/navbar"
-import { User, Plus, Eye, Home, ShoppingCart, Coffee, Tv } from "lucide-react"
+import { User, Plus, Eye, Home, ShoppingCart, Coffee, Tv, DollarSign } from "lucide-react"
+import { FileUploadModal } from "@/components/modals/file-upload-modal"
 
 interface Transaction {
   id: string
@@ -27,10 +29,24 @@ const iconMap: Record<string, any> = {
   ShoppingCart,
   Coffee,
   Tv,
+  DollarSign,
 }
 
 export function BudgetLayout({ role, balance, transactions }: Readonly<BudgetLayoutProps>) {
   const isTuteur = role === "TUTEUR"
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedTransactionId, setSelectedTransactionId] = useState<string | null>(null)
+
+  const handleAddDocument = (transactionId: string) => {
+    setSelectedTransactionId(transactionId)
+    setIsModalOpen(true)
+  }
+
+  const handleUpload = async (file: File) => {
+    // Mock upload - vraie logique plus tard
+    console.log("Uploading file for transaction:", selectedTransactionId, file)
+    await new Promise(resolve => setTimeout(resolve, 1000))
+  }
 
   return (
     <div className="min-h-screen bg-white pb-24">
@@ -92,7 +108,7 @@ export function BudgetLayout({ role, balance, transactions }: Readonly<BudgetLay
 
                 {/* Amount */}
                 <div className="text-right shrink-0">
-                  <p className="text-sm font-raleway font-bold text-foreground mb-1">
+                  <p className={`text-sm font-raleway font-bold mb-1 ${transaction.amount < 0 ? 'text-foreground' : 'text-green-600'}`}>
                     {transaction.amount.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
                   </p>
                   <p className="text-xs font-raleway text-gray-500">
@@ -101,12 +117,16 @@ export function BudgetLayout({ role, balance, transactions }: Readonly<BudgetLay
                 </div>
 
                 {/* Action Button */}
+                {/* Action Button */}
                 {showViewButton ? (
                   <button className="w-10 h-10 bg-green-500 hover:bg-green-600 rounded-xl flex items-center justify-center shrink-0 transition-colors">
                     <Eye className="w-5 h-5 text-white" />
                   </button>
                 ) : showAddButton ? (
-                  <button className="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                  <button 
+                    onClick={() => handleAddDocument(transaction.id)}
+                    className="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-xl flex items-center justify-center shrink-0 transition-colors"
+                  >
                     <Plus className="w-5 h-5 text-white" />
                   </button>
                 ) : null}
@@ -115,6 +135,13 @@ export function BudgetLayout({ role, balance, transactions }: Readonly<BudgetLay
           })}
         </div>
       </div>
+
+      {/* Upload Modal */}
+      <FileUploadModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onUpload={handleUpload}
+      />
 
       {/* Navbar */}
       <Navbar />
