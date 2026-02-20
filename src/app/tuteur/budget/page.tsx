@@ -57,5 +57,5 @@ export default async function TutelleBudgetPage() {
     },
   ]
 
-  return <BudgetLayout role="TUTELLE" balance={balance} transactions={transactions} />
+  return <BudgetLayout role="TUTEUR" balance={balance} transactions={transactions} />
 }

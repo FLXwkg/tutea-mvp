@@ -67,7 +67,7 @@ export function BudgetLayout({ role, balance, transactions }: Readonly<BudgetLay
         <div className="space-y-3">
           {transactions.map((transaction) => {
             const IconComponent = iconMap[transaction.iconName]
-            const showAddButton = !isTuteur && !transaction.hasDocument
+            const showAddButton = isTuteur && !transaction.hasDocument
             const showViewButton = transaction.hasDocument
 
             return (
