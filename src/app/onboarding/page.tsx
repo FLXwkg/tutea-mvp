@@ -58,14 +58,14 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-brand-bg flex items-center justify-center p-6">
       <div className="w-full max-w-md bg-brand-bg rounded-3xl p-8 relative h-[700px]">
         {/* Illustration/Icon */}
-        <div className="fixed top-16 left-1/2 transform -translate-x-1/2 flex justify-center z-10">
+        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 flex justify-center z-10">
           <Icon />
         </div>
 
         {/* Progress indicators */}
-        <div className="fixed top-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-10 gap-4">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex justify-center items-center z-10 gap-4">
           {onboardingSteps.map((s, index) => (
-            <div key={s.id} className="flex items-center gap-4">
+            <div key={s.id} className="flex items-center gap-2">
               <div
                 className={`flex items-center justify-center w-8 h-8 rounded-full border-2 text-sm font-montserrat font-semibold transition-colors ${
                   index === currentStep
@@ -78,7 +78,7 @@ export default function OnboardingPage() {
                 {index < currentStep ? "✓" : `0${s.id}`}
               </div>
               {index < onboardingSteps.length - 1 && (
-                <div className={`w-20 h-0.5 mx-4 transition-colors ${
+                <div className={`w-20 h-0.5 transition-colors ${
                   index < currentStep ? "bg-brand-blue" : "bg-border"
                 }`} />
               )}
