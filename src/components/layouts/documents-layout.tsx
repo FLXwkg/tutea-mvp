@@ -1,10 +1,12 @@
 "use client"
 
+import { useState } from "react"
 import { Header } from "@/components/header"
 import { Navbar } from "@/components/navbar"
-import { MoreVertical, Folder, User } from "lucide-react"
+import { MoreVertical, Folder, User, Download } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { FileUploadModal } from "@/components/modals/file-upload-modal"
 
 interface DocumentsLayoutProps {
   user: { firstName: any; lastName: any; role: any; } | null
@@ -14,6 +16,13 @@ interface DocumentsLayoutProps {
 export function DocumentsLayout({ user, children }: Readonly<DocumentsLayoutProps>) {
   const router = useRouter()
   const basePath = user?.role === "TUTEUR" ? "/tuteur" : "/tutelle"
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleUpload = async (file: File) => {
+    // Mock upload - vous implémenterez la vraie logique plus tard
+    console.log("Uploading file:", file)
+    await new Promise(resolve => setTimeout(resolve, 1000))
+  }
 
   // Mock data
   const recentFiles = [
@@ -137,6 +146,22 @@ export function DocumentsLayout({ user, children }: Readonly<DocumentsLayoutProp
         </div>
         {children}
       </div>
+
+      {/* Floating Add Button */}
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="fixed bottom-20 right-6 bg-blue-900 hover:bg-blue-700 text-white text-xs rounded-md px-3 pt-1 pb-2 shadow-lg flex items-center gap-2 transition-all z-40"
+      >
+        Ajouter un fichier
+        <Download className="w-4 h-5 text-xs" />
+      </button>
+
+      {/* Upload Modal */}
+      <FileUploadModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onUpload={handleUpload}
+      />
 
       {/* Navbar */}
       <Navbar />
