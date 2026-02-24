@@ -79,12 +79,14 @@ export function FileUploadModal({ isOpen, onClose, onUpload }: Readonly<FileUplo
         </p>
 
         {/* Drop zone */}
-        <div
+        <button
+          type="button"
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
-          className={`border-2 border-dashed rounded-2xl p-8 mb-4 transition-colors ${
+          onClick={() => document.getElementById('file-upload')?.click()}
+          className={`w-full border-2 border-dashed rounded-2xl p-8 mb-4 transition-colors ${
             dragActive ? "border-blue-500 bg-blue-50" : "border-gray-300"
           }`}
         >
@@ -114,42 +116,13 @@ export function FileUploadModal({ isOpen, onClose, onUpload }: Readonly<FileUplo
               id="file-upload"
               className="hidden"
               onChange={handleFileInput}
-              accept=".pdf,.png,.jpg,.jpeg"
+              accept=".pdf,.png,.jpg,.jpeg,.z"
             />
-            <label htmlFor="file-upload">
-              <Button
-                type="button"
-                onClick={() => document.getElementById('file-upload')?.click()}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-raleway font-medium rounded-xl px-6"
-              >
-                Explorateur de fichiers
-              </Button>
-            </label>
+            <span className="bg-blue-600 hover:bg-blue-700 text-white font-raleway font-medium rounded-xl px-6 py-2 inline-block">
+              Explorateur de fichiers
+            </span>
           </div>
-        </div>
-
-        {/* File info */}
-        <p className="text-xs font-raleway text-gray-500 mb-6">
-          Fichiers autorisés : pdf, png, jpg • 2 Mo max
-        </p>
-
-        {/* Actions */}
-        <div className="flex gap-3">
-          <Button
-            onClick={onClose}
-            variant="outline"
-            className="flex-1 h-12 border-2 border-gray-300 hover:bg-gray-100 text-foreground font-raleway font-medium rounded-xl"
-          >
-            Annuler
-          </Button>
-          <Button
-            onClick={handleValidate}
-            disabled={!selectedFile || uploading}
-            className="flex-1 h-12 bg-gray-400 hover:bg-gray-500 text-white font-raleway font-medium rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {uploading ? "Upload..." : "Valider"}
-          </Button>
-        </div>
+        </button>
       </div>
     </div>
   )

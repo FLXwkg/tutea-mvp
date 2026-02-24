@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Header } from "@/components/header"
-import { Navbar } from "@/components/navbar"
 import { MoreVertical, Folder, User, Download } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -162,9 +161,6 @@ export function DocumentsLayout({ user, children }: Readonly<DocumentsLayoutProp
         onClose={() => setIsModalOpen(false)}
         onUpload={handleUpload}
       />
-
-      {/* Navbar */}
-      <Navbar />
     </div>
   )
 }

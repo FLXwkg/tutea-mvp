@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Header } from "@/components/header"
-import { Navbar } from "@/components/navbar"
 import { ChevronRight, ChevronDown } from "lucide-react"
 
 interface Question {
@@ -117,9 +116,6 @@ export function SettingsLayout({ title, sections }: Readonly<SettingsLayoutProps
           ))}
         </div>
       </div>
-
-      {/* Navbar */}
-      <Navbar />
     </div>
   )
 }

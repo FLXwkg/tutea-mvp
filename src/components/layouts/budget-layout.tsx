@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Header } from "@/components/header"
-import { Navbar } from "@/components/navbar"
 import { User, Plus, Eye, Home, ShoppingCart, Coffee, Tv, DollarSign } from "lucide-react"
 import { FileUploadModal } from "@/components/modals/file-upload-modal"
 
@@ -85,6 +84,14 @@ export function BudgetLayout({ role, balance, transactions }: Readonly<BudgetLay
             const IconComponent = iconMap[transaction.iconName]
             const showAddButton = isTuteur && !transaction.hasDocument
             const showViewButton = transaction.hasDocument
+            const buttonDiv = showAddButton ? (
+                  <button 
+                    onClick={() => handleAddDocument(transaction.id)}
+                    className="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-xl flex items-center justify-center shrink-0 transition-colors"
+                  >
+                    <Plus className="w-5 h-5 text-white" />
+                  </button>
+                ) : null
 
             return (
               <div
@@ -122,14 +129,7 @@ export function BudgetLayout({ role, balance, transactions }: Readonly<BudgetLay
                   <button className="w-10 h-10 bg-green-500 hover:bg-green-600 rounded-xl flex items-center justify-center shrink-0 transition-colors">
                     <Eye className="w-5 h-5 text-white" />
                   </button>
-                ) : showAddButton ? (
-                  <button 
-                    onClick={() => handleAddDocument(transaction.id)}
-                    className="w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-xl flex items-center justify-center shrink-0 transition-colors"
-                  >
-                    <Plus className="w-5 h-5 text-white" />
-                  </button>
-                ) : null}
+                ) : buttonDiv}
               </div>
             )
           })}
@@ -142,9 +142,6 @@ export function BudgetLayout({ role, balance, transactions }: Readonly<BudgetLay
         onClose={() => setIsModalOpen(false)}
         onUpload={handleUpload}
       />
-
-      {/* Navbar */}
-      <Navbar />
     </div>
   )
 }
