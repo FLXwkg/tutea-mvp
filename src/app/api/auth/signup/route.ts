@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { PrismaClient } from "@prisma/client"
 import { generateTuteurCode } from "@/lib/utils"
+import { logger } from "@/lib/logger"
 
 const prisma = new PrismaClient()
 
@@ -9,7 +10,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { id, email, firstName, lastName, role, tuteurCode } = body
 
-    console.log("Tentative de création utilisateur:", { id, email, firstName, lastName, role })
+    logger.info('Signup attempt', email)
 
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await prisma.user.findUnique({
@@ -63,7 +64,7 @@ export async function POST(request: Request) {
         },
       })
 
-      console.log("Utilisateur créé avec succès:", user)
+      logger.info('User created successfully', email)
 
       // Créer la relation tuteur-tutellé
         await prisma.relation.create({
@@ -107,7 +108,7 @@ export async function POST(request: Request) {
         },
       })
 
-      console.log("Tuteur créé avec le code:", newTuteurCode)
+      logger.info('Tuteur créé :', email)
 
       return NextResponse.json({ user }, { status: 201 })
     }
@@ -118,7 +119,7 @@ export async function POST(request: Request) {
     )
 
   } catch (error: any) {
-    console.error("Erreur lors de la création:", error)
+    logger.error('Signup error', error.message )
     return NextResponse.json(
       { error: error.message || "Erreur lors de la création du profil" },
       { status: 500 }

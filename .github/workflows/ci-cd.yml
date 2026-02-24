@@ -75,6 +75,9 @@ jobs:
             --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
             --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
             --build-arg DIRECT_URL=${{ secrets.DIRECT_URL }} \
+            --build-arg LOKI_HOST=${{ secrets.LOKI_HOST }} \
+            --build-arg LOKI_USERNAME=${{ secrets.LOKI_USERNAME }} \
+            --build-arg LOKI_API_KEY=${{ secrets.LOKI_API_KEY }} \
             -t tutea-mvp .
 
       - name: Log in to Github Container Registry
