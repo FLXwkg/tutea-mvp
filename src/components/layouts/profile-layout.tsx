@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Header } from "@/components/header"
-import { Navbar } from "@/components/navbar"
 import { ChevronRight, Info, Home } from "lucide-react"
 import Image from "next/image"
 import { Input } from "@/components/ui/input"
@@ -187,9 +186,6 @@ export function ProfileLayout({ user, onSave }: ProfileLayoutProps) {
           )}
         </div>
       </div>
-
-      {/* Navbar */}
-      <Navbar />
     </div>
   )
 }

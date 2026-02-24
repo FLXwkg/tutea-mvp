@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Header } from "@/components/header"
-import { Navbar } from "@/components/navbar"
 import { User, Plus, Eye, Home, ShoppingCart, Coffee, Tv, DollarSign } from "lucide-react"
 import { FileUploadModal } from "@/components/modals/file-upload-modal"
 
@@ -143,9 +142,6 @@ export function BudgetLayout({ role, balance, transactions }: Readonly<BudgetLay
         onClose={() => setIsModalOpen(false)}
         onUpload={handleUpload}
       />
-
-      {/* Navbar */}
-      <Navbar />
     </div>
   )
 }

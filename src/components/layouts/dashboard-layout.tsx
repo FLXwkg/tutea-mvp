@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
-import { Navbar } from "@/components/navbar"
 import { User } from "lucide-react"
 import { useRouter } from "next/navigation"
 
@@ -67,9 +66,6 @@ export function DashboardLayout({ user, children, onSearch }: Readonly<Dashboard
 
       {/* Content dynamique (section questions) */}
       {children}
-
-      {/* Navbar */}
-      <Navbar />
     </div>
   )
 }

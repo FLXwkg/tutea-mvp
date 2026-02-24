@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Header } from "@/components/header"
-import { Navbar } from "@/components/navbar"
 import Image from "next/image"
 import Link from "next/link"
 import { ChevronRight, LogOut, User, HelpCircle, History, Settings, Palette, Copy, Check } from "lucide-react"
@@ -200,9 +199,6 @@ export function AccountLayout({
         {/* Children (contenu additionnel) */}
         {children}
       </div>
-
-      {/* Navbar */}
-      <Navbar />
     </div>
   )
 }

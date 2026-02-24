@@ -1,5 +1,3 @@
-import { Navbar } from "@/components/navbar"
-
 export default function MessagesPage() {
   return (
     <div className="min-h-screen bg-[#E8D5C4] pb-24">
@@ -9,7 +7,6 @@ export default function MessagesPage() {
         </h1>
         <p className="text-foreground">Page en construction...</p>
       </div>
-      <Navbar />
     </div>
   )
 }
