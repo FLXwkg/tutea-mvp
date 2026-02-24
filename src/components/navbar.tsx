@@ -41,13 +41,14 @@ export function Navbar() {
     { href: `${basePath}/messages`, icon: MessageSquare, label: "Messages", aliases: []  },
   ]
 
-  return (
+  const showNavbar = pathname !== '/signup' && pathname !== '/login' && pathname !== '/onboarding'
+
+  return (showNavbar ?
     <nav className="fixed bottom-0 left-0 right-0 bg-transparent">
       <div className=" xs:mx-2 md:mx-4 bg-white shadow-lg z-50 rounded-xl">
         <div className="flex justify-around items-center h-18 gap-0 border rounded-xl">
           {navItems.map((item, index) => {
             const isActive = pathname === item.href || item.aliases?.some(alias => pathname === alias)
-            console.log("Comparing", pathname, "with", item.href, "and aliases", item.aliases, "isActive:", isActive)
             const Icon = item.icon
             const isFirst = index === 0
             const isLast = index === navItems.length - 1
@@ -76,5 +77,6 @@ export function Navbar() {
         </div>
       </div>
     </nav>
+    : null
   )
 }

@@ -7,6 +7,7 @@ import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight } from "lucide-react"
+import { logger } from "@/lib/logger"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -28,6 +29,7 @@ export default function LoginPage() {
       })
 
       if (error) throw error
+      logger.info({ email: data.user?.email }, 'Login successful for user')
 
       // Récupérer le profil utilisateur pour vérifier son rôle
       const { data: userData, error: userError } = await supabase
