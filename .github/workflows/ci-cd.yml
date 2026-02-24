@@ -76,7 +76,7 @@ jobs:
             --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
             --build-arg DIRECT_URL=${{ secrets.DIRECT_URL }} \
             --build-arg LOKI_HOST=${{ secrets.LOKI_HOST }} \
-            --build-arg LOKI_USERNAME=${{ secrets.LOKI_USERNAME }} \
+            --build-arg LOKI_USER=${{ secrets.LOKI_USER }} \
             --build-arg LOKI_API_KEY=${{ secrets.LOKI_API_KEY }} \
             -t tutea-mvp .
 
