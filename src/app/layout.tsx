@@ -27,8 +27,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${montserrat.variable} ${raleway.variable}`} suppressHydrationWarning>
-      <body className="font-raleway antialiased bg-brand-bg text-foreground">{children}</body>
+      <body className="font-raleway antialiased bg-brand-bg text-foreground">
+        {children}
       <Navbar />
+      </body>
     </html>
   );
 }
