@@ -30,7 +30,7 @@ export const logger = pino({
             // CHANGEMENT ICI : utiliser headers au lieu de basicAuth
             headers: {
               Authorization: `Basic ${Buffer.from(
-                `${process.env.LOKI_USERNAME}:${process.env.LOKI_API_KEY}`
+                `${process.env.LOKI_USER}:${process.env.LOKI_API_KEY}`
               ).toString('base64')}`,
             },
             labels: {
