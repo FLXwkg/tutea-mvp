@@ -220,11 +220,3 @@ npm run lint
 2. Créer une branche feature/MaFeature
 3. Commit avec Gitmoji
 4. Push et ouvrir une Pull Request
-
-## Support
-
-Issues : [Issues](https://github.com/votre-org/tutea-mvp/issues)
-
-## License
-
-MIT
