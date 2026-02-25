@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { X, Upload } from "lucide-react"
-import { Button } from "@/components/ui/button"
 
 interface FileUploadModalProps {
   isOpen: boolean
@@ -13,7 +12,6 @@ interface FileUploadModalProps {
 export function FileUploadModal({ isOpen, onClose, onUpload }: Readonly<FileUploadModalProps>) {
   const [dragActive, setDragActive] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [uploading, setUploading] = useState(false)
 
   if (!isOpen) return null
 
@@ -40,22 +38,6 @@ export function FileUploadModal({ isOpen, onClose, onUpload }: Readonly<FileUplo
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       setSelectedFile(e.target.files[0])
-    }
-  }
-
-  const handleValidate = async () => {
-    if (!selectedFile) return
-
-    setUploading(true)
-    try {
-      if (onUpload) {
-        await onUpload(selectedFile)
-      }
-      onClose()
-    } catch (error) {
-      console.error("Upload error:", error)
-    } finally {
-      setUploading(false)
     }
   }
 
