@@ -9,6 +9,7 @@ export const logger = pino({
   },
   ...(isDevelopment
     ? {
+        // En développement : logs lisibles dans la console
         transport: {
           target: 'pino-pretty',
           options: {
@@ -19,18 +20,23 @@ export const logger = pino({
         },
       }
     : {
+        // En production : envoi vers Loki
         transport: {
           target: 'pino-loki',
           options: {
+            batching: true,
+            interval: 5,
             host: process.env.LOKI_HOST,
-            username: process.env.LOKI_USER,
-            password: process.env.LOKI_API_KEY,
+            // CHANGEMENT ICI : utiliser headers au lieu de basicAuth
+            headers: {
+              Authorization: `Basic ${Buffer.from(
+                `${process.env.LOKI_USERNAME}:${process.env.LOKI_API_KEY}`
+              ).toString('base64')}`,
+            },
             labels: {
               app: 'tutea',
               env: 'production',
             },
-            batching: true,
-            interval: 1000,
           },
         },
       }),
