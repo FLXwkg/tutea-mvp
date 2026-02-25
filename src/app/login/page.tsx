@@ -2,12 +2,10 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/lib/supabase/client"
 import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ArrowRight } from "lucide-react"
-import { logger } from "@/lib/logger"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -15,7 +13,6 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const supabase = createClient()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -23,25 +20,21 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      // Appel à l'API route
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       })
 
-      if (error) throw error
-      logger.info({ email: data.user?.email }, 'Login successful for user')
+      const data = await response.json()
 
-      // Récupérer le profil utilisateur pour vérifier son rôle
-      const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("role")
-        .eq("email", email)
-        .single()
-
-      if (userError) throw userError
+      if (!response.ok) {
+        throw new Error(data.error || "Erreur lors de la connexion")
+      }
 
       // Rediriger selon le rôle
-      if (userData?.role === "TUTEUR") {
+      if (data.role === "TUTEUR") {
         router.push("/tuteur/dashboard")
       } else {
         router.push("/tutelle/dashboard")
