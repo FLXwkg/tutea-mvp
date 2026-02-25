@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { id, email, firstName, lastName, role, tuteurCode } = body
 
-    logger.info('Signup attempt', email)
+    logger.info({ email, role }, 'Signup attempt')
 
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await prisma.user.findUnique({
@@ -18,6 +18,7 @@ export async function POST(request: Request) {
     })
 
     if (existingUser) {
+      logger.error({ email }, 'Signup failed - email already exists')  // ← AJOUT
       return NextResponse.json(
         { error: "Un compte avec cet email existe déjà" },
         { status: 409 }
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
     // Si c'est un tutellé, vérifier le code tuteur
     if (role === "TUTELLE") {
       if (!tuteurCode) {
+        logger.error({ email }, 'Signup failed - missing tuteur code')  // ← AJOUT
         return NextResponse.json(
           { error: "Le code tuteur est requis" },
           { status: 400 }
@@ -39,6 +41,7 @@ export async function POST(request: Request) {
       })
 
       if (!tuteur) {
+        logger.error({ email, tuteurCode }, 'Signup failed - invalid tuteur code')  // ← AJOUT
         return NextResponse.json(
           { error: "Code tuteur invalide" },
           { status: 404 }
@@ -46,12 +49,12 @@ export async function POST(request: Request) {
       }
 
       if (tuteur.role !== "TUTEUR") {
+        logger.error({ email, tuteurCode }, 'Signup failed - code does not belong to tuteur')  // ← AJOUT
         return NextResponse.json(
           { error: "Ce code n'appartient pas à un tuteur" },
           { status: 400 }
         )
       }
-    
 
       // Créer l'utilisateur dans la base de données
       const user = await prisma.user.create({
@@ -64,7 +67,7 @@ export async function POST(request: Request) {
         },
       })
 
-      logger.info('User created successfully', email)
+      logger.info({ email, userId: user.id }, 'Tutellé created successfully')
 
       // Créer la relation tuteur-tutellé
         await prisma.relation.create({
@@ -75,7 +78,7 @@ export async function POST(request: Request) {
           },
         })
 
-      console.log("Tutellé créé et lié au tuteur:", tuteur)
+      logger.info({ tuteurId: tuteur.id, tutelleId: user.id }, 'Tuteur-Tutellé relation created')
 
       return NextResponse.json({ user }, { status: 201 })
     }
@@ -108,18 +111,19 @@ export async function POST(request: Request) {
         },
       })
 
-      logger.info('Tuteur créé :', email)
+      logger.info({ email, userId: user.id, tuteurCode: newTuteurCode }, 'Tuteur created successfully')
 
       return NextResponse.json({ user }, { status: 201 })
     }
 
+    logger.error({ email, role }, 'Signup failed - invalid role') 
     return NextResponse.json(
       { error: "Rôle invalide" },
       { status: 400 }
     )
 
   } catch (error: any) {
-    logger.error('Signup error', error.message )
+    logger.error({ error: error.message }, 'Signup error - unexpected exception')
     return NextResponse.json(
       { error: error.message || "Erreur lors de la création du profil" },
       { status: 500 }
