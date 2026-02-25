@@ -163,6 +163,56 @@ docker logs tutea-mvp 2>&1 | grep -i error
 npm test
 npm run lint
 ```
+## Schema du CI
+```
+┌──────────────┐
+│  Developer   │
+│  git push    │
+└──────┬───────┘
+       │
+       ▼
+┌─────────────────────────────────────────────────┐
+│           GitHub Repository (main)              │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   ▼
+       ┌───────────────────────┐
+       │  GitHub Actions       │
+       │  Triggers             │
+       └───────────┬───────────┘
+                   │
+       ┌───────────┴───────────┐
+       │                       │
+       ▼                       ▼
+┌──────────────┐      ┌──────────────┐
+│   Test Job   │      │  Build Job   │
+│              │      │              │
+│ • Lint       │──✓──▶│ • Docker     │
+│ • SonarQube  │      │   Build      │
+│              │      │ • Push GHCR  │
+└──────────────┘      └──────┬───────┘
+                             │
+                             ▼
+                   ┌─────────────────┐
+                   │ GHCR Registry   │
+                   │ (Image stored)  │
+                   └────────┬────────┘
+                            │
+                            ▼
+                   ┌─────────────────┐
+                   │   VPS Server    │
+                   │                 │
+                   │ • Pull image    │
+                   │ • Restart       │
+                   │ • Health check  │
+                   └────────┬────────┘
+                            │
+                            ▼
+                   ┌─────────────────┐
+                   │  Grafana Cloud  │
+                   │  (Monitoring)   │
+                   └─────────────────┘
+```
 
 ## Contribution
 
