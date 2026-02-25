@@ -223,7 +223,7 @@ npm run lint
 
 ## Support
 
-Issues : [PLACEHOLDER_14](https://github.com/votre-org/tutea-mvp/issues)
+Issues : [Issues](https://github.com/votre-org/tutea-mvp/issues)
 
 ## License
 
